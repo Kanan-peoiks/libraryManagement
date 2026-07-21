@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MemberResponseDTO {
-    private String memberId;
+    private Long memberId;
     private String name;
     private String email;
     private LocalDate memberBirthDate;
