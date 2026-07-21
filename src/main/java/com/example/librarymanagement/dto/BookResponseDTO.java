@@ -15,4 +15,5 @@ public class BookResponseDTO {
     private String isbn;
     private String genre;
     private Long authorId;
+    private String authorName;
 }
