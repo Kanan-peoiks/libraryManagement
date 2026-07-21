@@ -2,6 +2,7 @@ package com.example.librarymanagement.service;
 
 import com.example.librarymanagement.dto.AuthorRequestDTO;
 import com.example.librarymanagement.dto.AuthorResponseDTO;
+import com.example.librarymanagement.exception.NotFoundException;
 import com.example.librarymanagement.model.Author;
 import com.example.librarymanagement.repository.AuthorRepo;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +33,7 @@ public class AuthorService {
 
     public AuthorResponseDTO getAuthorById(Long id) {
         Author author = authorRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Müəllif tapılmadı. ID: " + id));
+                .orElseThrow(() -> new NotFoundException("Müəllif tapılmadı. ID: " + id));
 
         AuthorResponseDTO responseDTO = new AuthorResponseDTO();
         responseDTO.setId(author.getId());

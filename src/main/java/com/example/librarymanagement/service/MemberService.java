@@ -2,6 +2,7 @@ package com.example.librarymanagement.service;
 
 import com.example.librarymanagement.dto.MemberRequestDTO;
 import com.example.librarymanagement.dto.MemberResponseDTO;
+import com.example.librarymanagement.exception.NotFoundException;
 import com.example.librarymanagement.model.Member;
 import com.example.librarymanagement.repository.MemberRepo;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class MemberService {
     public MemberResponseDTO getMemberById(Long id) {
 
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Üzv tapılmadı. ID: " + id));
+                .orElseThrow(() -> new NotFoundException("Üzv tapılmadı. ID: " + id));
 
         MemberResponseDTO responseDTO = new MemberResponseDTO();
         responseDTO.setMemberId(member.getId());

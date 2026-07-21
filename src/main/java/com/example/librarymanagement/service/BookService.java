@@ -2,6 +2,7 @@ package com.example.librarymanagement.service;
 
 import com.example.librarymanagement.dto.BookRequestDTO;
 import com.example.librarymanagement.dto.BookResponseDTO;
+import com.example.librarymanagement.exception.NotFoundException;
 import com.example.librarymanagement.model.Author;
 import com.example.librarymanagement.model.Book;
 import com.example.librarymanagement.repository.AuthorRepo;
@@ -20,7 +21,7 @@ public class BookService {
 
     public BookResponseDTO createBook(BookRequestDTO requestDTO) {
         Author author = authorRepository.findById(requestDTO.getAuthorId())
-                .orElseThrow(() -> new RuntimeException("Müəllif tapılmadı. ID: " + requestDTO.getAuthorId()));
+                .orElseThrow(() -> new NotFoundException("Müəllif tapılmadı. ID: " + requestDTO.getAuthorId()));
 
         Book newBook = new Book();
         newBook.setTitle(requestDTO.getTitle());
