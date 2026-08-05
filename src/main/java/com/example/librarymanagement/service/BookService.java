@@ -47,6 +47,19 @@ public class BookService {
     }
 
     @Transactional
+    public BookResponseDTO updateBook(Long id, BookRequestDTO requestDTO) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Yenilənəcək kitab tapılmadı. ID: " + id));
+
+        Author author = authorRepo.findById(requestDTO.getAuthorId())
+                .orElseThrow(() -> new NotFoundException("Müəllif tapılmadı. ID: " + requestDTO.getAuthorId()));
+
+        bookMapper.updateEntityFromDto(requestDTO, author, book);
+        Book updatedBook = bookRepository.save(book);
+        return bookMapper.toResponseDTO(updatedBook);
+    }
+
+    @Transactional
     public void deleteBook(Long id) {
         if (!bookRepository.existsById(id)) {
             throw new NotFoundException("Silinəcək kitab tapılmadı. ID: " + id);

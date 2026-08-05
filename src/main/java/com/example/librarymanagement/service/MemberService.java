@@ -12,8 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -24,7 +22,7 @@ public class MemberService {
     @Transactional
     public MemberResponseDTO createMember(MemberRequestDTO requestDTO) {
         Member member = memberMapper.toEntity(requestDTO);
-        member.setMembershipDate(LocalDate.now());
+        member.setMembershipDate(java.time.LocalDate.now());
 
         Member savedMember = memberRepository.save(member);
         return memberMapper.toResponseDTO(savedMember);
@@ -41,6 +39,16 @@ public class MemberService {
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Üzv tapılmadı. ID: " + id));
         return memberMapper.toResponseDTO(member);
+    }
+
+    @Transactional
+    public MemberResponseDTO updateMember(Long id, MemberRequestDTO requestDTO) {
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Yenilənəcək üzv tapılmadı. ID: " + id));
+
+        memberMapper.updateEntityFromDto(requestDTO, member);
+        Member updatedMember = memberRepository.save(member);
+        return memberMapper.toResponseDTO(updatedMember);
     }
 
     @Transactional

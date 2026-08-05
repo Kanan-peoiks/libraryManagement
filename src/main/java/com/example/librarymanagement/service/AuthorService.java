@@ -6,11 +6,11 @@ import com.example.librarymanagement.exception.NotFoundException;
 import com.example.librarymanagement.mapper.AuthorMapper;
 import com.example.librarymanagement.model.Author;
 import com.example.librarymanagement.repository.AuthorRepo;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +37,16 @@ public class AuthorService {
         Author author = authorRepo.findById(id)
                 .orElseThrow(() -> new NotFoundException("Müəllif tapılmadı. ID: " + id));
         return authorMapper.toResponseDTO(author);
+    }
+
+    @Transactional
+    public AuthorResponseDTO updateAuthor(Long id, AuthorRequestDTO requestDTO) {
+        Author author = authorRepo.findById(id)
+                .orElseThrow(() -> new NotFoundException("Yenilənəcək müəllif tapılmadı. ID: " + id));
+
+        authorMapper.updateEntityFromDto(requestDTO, author);
+        Author updatedAuthor = authorRepo.save(author);
+        return authorMapper.toResponseDTO(updatedAuthor);
     }
 
     @Transactional
