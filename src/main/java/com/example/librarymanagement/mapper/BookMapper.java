@@ -18,6 +18,13 @@ public class BookMapper {
         return book;
     }
 
+    public void updateEntityFromDto(BookRequestDTO dto, Author author, Book book) {
+        book.setTitle(dto.getTitle());
+        book.setIsbn(dto.getIsbn());
+        book.setGenre(dto.getGenre());
+        book.setAuthor(author);
+    }
+
     public BookResponseDTO toResponseDTO(Book book) {
         BookResponseDTO responseDTO = new BookResponseDTO();
         responseDTO.setId(book.getId());

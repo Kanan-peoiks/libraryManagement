@@ -16,6 +16,11 @@ public class MemberMapper {
         return member;
     }
 
+    public void updateEntityFromDto(MemberRequestDTO dto, Member member) {
+        member.setName(dto.getName());
+        member.setEmail(dto.getEmail());
+    }
+
     public MemberResponseDTO toResponseDTO(Member member) {
         MemberResponseDTO responseDTO = new MemberResponseDTO();
         responseDTO.setMemberId(member.getId());

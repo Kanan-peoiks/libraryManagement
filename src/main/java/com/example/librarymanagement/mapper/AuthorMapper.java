@@ -15,6 +15,11 @@ public class AuthorMapper {
         return author;
     }
 
+    public void updateEntityFromDto(AuthorRequestDTO dto, Author author) {
+        author.setName(dto.getName());
+        author.setBiography(dto.getBiography());
+    }
+
     public AuthorResponseDTO toResponseDTO(Author author) {
         AuthorResponseDTO responseDTO = new AuthorResponseDTO();
         responseDTO.setId(author.getId());
