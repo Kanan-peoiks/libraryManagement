@@ -36,13 +36,12 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // Spring Security prefiksi: ROLE_USER və ya ROLE_ADMIN
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
 
     @Override
     public String getUsername() {
-        return email; // İdentifikasiya vasitəsi kimi email götürülür
+        return email;
     }
 
     @Override
