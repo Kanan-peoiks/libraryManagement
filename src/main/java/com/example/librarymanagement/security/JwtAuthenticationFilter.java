@@ -59,7 +59,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         } catch (ExpiredJwtException ex) {
-            // Token-in vaxtı bitdikdə konteksti təmizləyirik, AuthenticationEntryPoint 401 qaytaracaq
             SecurityContextHolder.clearContext();
             request.setAttribute("expired", ex.getMessage());
         } catch (Exception ex) {
