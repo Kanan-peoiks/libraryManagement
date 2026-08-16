@@ -1,6 +1,10 @@
 package com.example.librarymanagement.repository;
 
 import com.example.librarymanagement.model.Book;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
@@ -32,4 +36,18 @@ public interface BookRepe extends JpaRepository<Book, Long>, JpaSpecificationExe
             LIMIT :limit
             """, nativeQuery = true)
         List<Book> findTopBorrowedBooks(@Param("limit") int limit);
+
+
+    //checkpoint 5
+    @Override
+    @EntityGraph(attributePaths = {"author", "categories"})
+    Page<Book> findAll(Pageable pageable);
+
+    @Override
+    @EntityGraph(attributePaths = {"author", "categories"})
+    Page<Book> findAll(Specification<Book> spec, Pageable pageable);
+
+    @Override
+    @EntityGraph(attributePaths = {"author", "categories"})
+    Optional<Book> findById(Long id);
     }

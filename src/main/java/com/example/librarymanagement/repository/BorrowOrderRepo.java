@@ -2,6 +2,7 @@ package com.example.librarymanagement.repository;
 
 import com.example.librarymanagement.model.BorrowOrder;
 import com.example.librarymanagement.model.OrderStatus;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -30,4 +31,8 @@ public interface BorrowOrderRepo extends JpaRepository<BorrowOrder, Long> {
             WHERE bo.user_id = :userId AND bo.status = 'ACTIVE'
             """, nativeQuery = true)
     Long countActiveBorrowedBooksByUserId(@Param("userId") Long userId);
+
+    // checkpoint 5
+    @EntityGraph(attributePaths = {"user", "items", "items.book"})
+    List<BorrowOrder> findAll();
 }
