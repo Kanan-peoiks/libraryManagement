@@ -2,6 +2,7 @@ package com.example.librarymanagement.controller;
 
 import com.example.librarymanagement.dto.BookRequestDTO;
 import com.example.librarymanagement.dto.BookResponseDTO;
+import com.example.librarymanagement.dto.BookSearch;
 import com.example.librarymanagement.service.BookService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -9,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -50,5 +52,14 @@ public class BookController {
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/search")
+    @Operation(summary = "Kitabların dinamik axtarışı və sorğusu")
+    public ResponseEntity<Page<BookResponseDTO>> searchBooks(
+            BookSearch search,
+            @PageableDefault(size = 5, sort = "title") Pageable pageable
+    ) {
+        return ResponseEntity.ok(bookService.searchBooks(search, pageable));
     }
 }
