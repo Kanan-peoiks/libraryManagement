@@ -11,6 +11,8 @@ import com.example.librarymanagement.repository.AuthorRepo;
 import com.example.librarymanagement.repository.BookRepe;
 import com.example.librarymanagement.specification.BookSpecification;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -42,6 +44,8 @@ public class BookService {
                 .map(bookMapper::toResponseDTO);
     }
 
+
+    @Cacheable(value = "books", key = "#id")
     @Transactional(readOnly = true)
     public BookResponseDTO getBookById(Long id) {
         Book book = bookRepository.findById(id)
@@ -49,6 +53,8 @@ public class BookService {
         return bookMapper.toResponseDTO(book);
     }
 
+
+    @CacheEvict(value = "books", key = "#id")
     @Transactional
     public BookResponseDTO updateBook(Long id, BookRequestDTO requestDTO) {
         Book book = bookRepository.findById(id)
@@ -62,6 +68,7 @@ public class BookService {
         return bookMapper.toResponseDTO(updatedBook);
     }
 
+    @CacheEvict(value = "books", key = "#id")
     @Transactional
     public void deleteBook(Long id) {
         if (!bookRepository.existsById(id)) {
