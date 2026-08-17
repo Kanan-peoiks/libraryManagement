@@ -18,7 +18,7 @@ public class FileStorageService {
 
     private final Path uploadDir = Paths.get("uploads/covers");
 
-    // Whitelist və Maksimum Ölçü (2MB)
+
     private static final List<String> ALLOWED_CONTENT_TYPES = Arrays.asList("image/jpeg", "image/png", "image/webp");
     private static final List<String> ALLOWED_EXTENSIONS = Arrays.asList(".jpg", ".jpeg", ".png", ".webp");
     private static final long MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
@@ -32,18 +32,18 @@ public class FileStorageService {
     }
 
     public String saveFile(MultipartFile file) {
-        // 1. Ölçü yoxlanışı
+
         if (file.isEmpty() || file.getSize() > MAX_FILE_SIZE) {
             throw new IllegalArgumentException("Fayl boş ola bilməz və maksimum 2MB ola bilər.");
         }
 
-        // 2. MIME Tip (Content-Type) yoxlanışı
+
         String contentType = file.getContentType();
         if (contentType == null || !ALLOWED_CONTENT_TYPES.contains(contentType.toLowerCase())) {
             throw new IllegalArgumentException("Yalnız JPEG, PNG və WEBP formatında şəkillər qəbul edilir.");
         }
 
-        // 3. Uzantı (Extension) yoxlanışı
+
         String originalFilename = file.getOriginalFilename();
         if (originalFilename == null || !hasAllowedExtension(originalFilename)) {
             throw new IllegalArgumentException("İcazə verilməyən fayl uzantısı!");
