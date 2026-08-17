@@ -28,6 +28,7 @@ public class BorrowOrderService {
     private final BorrowOrderRepo borrowOrderRepo;
     private final UserRepo userRepo;
     private final BookRepe bookRepo;
+    private final NotificationService notificationService; // Task 4: Asinxron bildiriş servisi
 
     @Transactional
     public BorrowOrderResponseDTO createBorrowOrder(CreateBorrowOrderRequestDTO request) {
@@ -42,7 +43,7 @@ public class BorrowOrderService {
                 .items(new ArrayList<>())
                 .build();
 
-        //kitab üçün
+        // Kitablar üçün
         for (BorrowItemRequestDTO itemDTO : request.getItems()) {
             Book book = bookRepo.findById(itemDTO.getBookId())
                     .orElseThrow(() -> new NotFoundException("Kitab tapılmadı. ID: " + itemDTO.getBookId()));
@@ -56,6 +57,8 @@ public class BorrowOrderService {
         }
 
         BorrowOrder savedOrder = borrowOrderRepo.save(order);
+
+        notificationService.sendBorrowNotification(user.getEmail(), savedOrder.getId());
 
         return mapToResponseDTO(savedOrder);
     }
